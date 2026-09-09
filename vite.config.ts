@@ -4,10 +4,8 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
-  // Automatically adjust base path for GitHub Pages deployment
-  base: process.env.GITHUB_REPOSITORY
-    ? `/${process.env.GITHUB_REPOSITORY.split('/')[1]}/`
-    : './',
+  // Use relative base path for 100% reliable GitHub Pages asset loading
+  base: './',
   build: {
     outDir: 'dist',
     emptyOutDir: true,
