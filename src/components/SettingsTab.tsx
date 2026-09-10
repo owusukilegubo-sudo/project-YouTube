@@ -27,21 +27,21 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
   };
 
   return (
-    <div className="flex-1 flex flex-col p-6 space-y-6 overflow-y-auto select-none">
-      <div className="fluent-card rounded-2xl p-6">
-        <div className="flex items-center gap-2 text-xs font-semibold text-blue-400 mb-1">
-          <SettingsIcon className="w-4 h-4" />
+    <div className="flex-1 flex flex-col p-2.5 sm:p-6 space-y-3 sm:space-y-6 overflow-y-auto select-none">
+      <div className="fluent-card rounded-xl sm:rounded-2xl p-3.5 sm:p-6">
+        <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold text-blue-400 mb-1">
+          <SettingsIcon className="w-3.5 h-3.5" />
           <span>Web Application Preferences</span>
         </div>
-        <h2 className="text-xl font-bold text-zinc-100 tracking-tight">
+        <h2 className="text-sm sm:text-xl font-bold text-zinc-100 tracking-tight">
           API Backend Endpoint & Diagnostics
         </h2>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6">
         {/* Downloader API Endpoint Form */}
-        <div className="fluent-card rounded-2xl p-6 space-y-4">
-          <div className="flex items-center gap-2 text-sm font-bold text-zinc-200">
+        <div className="fluent-card rounded-xl sm:rounded-2xl p-3.5 sm:p-6 space-y-3 sm:space-y-4">
+          <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-zinc-200">
             <Server className="w-4 h-4 text-blue-400" />
             <span>Downloader API Endpoint</span>
           </div>
