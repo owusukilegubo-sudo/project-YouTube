@@ -11,15 +11,27 @@ import { Download, ListMusic, Folder, Settings as SettingsIcon } from 'lucide-re
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'downloader' | 'playlist' | 'library' | 'settings'>('downloader');
 
-  // Candidate API Servers for Zero-Config Auto-Discovery
+  const isValidUrl = (url: string | null | undefined): boolean => {
+    if (!url || url === 'null' || url === 'undefined' || url.trim() === '') return false;
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  const rawStoredUrl = localStorage.getItem('yt_web_api_url');
+  const storedUrl = isValidUrl(rawStoredUrl) ? rawStoredUrl : null;
+
   const candidateApiUrls = [
-    localStorage.getItem('yt_web_api_url') || '',
+    storedUrl,
     window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
       ? 'http://localhost:4000'
       : 'https://project-youtube.onrender.com',
     'http://localhost:4000',
     'https://project-youtube-api.onrender.com',
-  ].filter(Boolean);
+  ].filter((url): url is string => typeof url === 'string' && isValidUrl(url));
 
   const [apiServerUrl, setApiServerUrl] = useState<string>(candidateApiUrls[0] || 'http://localhost:4000');
   const [isApiOnline, setIsApiOnline] = useState<boolean>(false);
