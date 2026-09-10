@@ -11,10 +11,17 @@ import { Download, ListMusic, Folder, Settings as SettingsIcon } from 'lucide-re
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'downloader' | 'playlist' | 'library' | 'settings'>('downloader');
 
-  // Downloader API Host (default to localhost:4000 or custom)
-  const [apiServerUrl, setApiServerUrl] = useState<string>(() => {
-    return localStorage.getItem('yt_web_api_url') || 'http://localhost:4000';
-  });
+  // Candidate API Servers for Zero-Config Auto-Discovery
+  const candidateApiUrls = [
+    localStorage.getItem('yt_web_api_url') || '',
+    window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:4000'
+      : 'https://project-youtube.onrender.com',
+    'http://localhost:4000',
+    'https://project-youtube-api.onrender.com',
+  ].filter(Boolean);
+
+  const [apiServerUrl, setApiServerUrl] = useState<string>(candidateApiUrls[0] || 'http://localhost:4000');
   const [isApiOnline, setIsApiOnline] = useState<boolean>(false);
 
   // QuickBar Preset States
@@ -38,18 +45,32 @@ export const App: React.FC = () => {
 
   const [batchTotalCount, setBatchTotalCount] = useState(0);
 
-  // Check API Server Health
+  // Zero-Config Automatic Health & Endpoint Discovery
   const checkHealth = async () => {
+    // Probe current endpoint first
     try {
       const res = await fetch(`${apiServerUrl}/api/health`);
       if (res.ok) {
         setIsApiOnline(true);
-      } else {
-        setIsApiOnline(false);
+        return;
       }
-    } catch {
-      setIsApiOnline(false);
+    } catch {}
+
+    // Auto-discover alternative working candidate endpoints silently
+    for (const url of candidateApiUrls) {
+      if (url === apiServerUrl) continue;
+      try {
+        const res = await fetch(`${url}/api/health`);
+        if (res.ok) {
+          setApiServerUrl(url);
+          setIsApiOnline(true);
+          localStorage.setItem('yt_web_api_url', url);
+          return;
+        }
+      } catch {}
     }
+
+    setIsApiOnline(false);
   };
 
   useEffect(() => {
