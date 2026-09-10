@@ -4,12 +4,11 @@ import { QuickBar } from './components/QuickBar';
 import { DownloaderTab } from './components/DownloaderTab';
 import { PlaylistTab } from './components/PlaylistTab';
 import { LibraryTab } from './components/LibraryTab';
-import { SettingsTab } from './components/SettingsTab';
 import { WebDownloadItem } from './components/DownloadCard';
-import { Download, ListMusic, Folder, Settings as SettingsIcon } from 'lucide-react';
+import { Download, ListMusic, Folder } from 'lucide-react';
 
 export const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'downloader' | 'playlist' | 'library' | 'settings'>('downloader');
+  const [activeTab, setActiveTab] = useState<'downloader' | 'playlist' | 'library'>('downloader');
 
   const isValidUrl = (url: string | null | undefined): boolean => {
     if (!url || url === 'null' || url === 'undefined' || url.trim() === '') return false;
@@ -187,7 +186,6 @@ export const App: React.FC = () => {
       <Header
         apiServerUrl={apiServerUrl}
         isApiOnline={isApiOnline}
-        onOpenSettings={() => setActiveTab('settings')}
       />
 
       <QuickBar
@@ -240,18 +238,6 @@ export const App: React.FC = () => {
               <Folder className="w-4 h-4" />
               <span>Web Library</span>
             </button>
-
-            <button
-              onClick={() => setActiveTab('settings')}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
-                activeTab === 'settings'
-                  ? 'bg-blue-600/20 text-blue-400 border border-blue-500/30'
-                  : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40'
-              }`}
-            >
-              <SettingsIcon className="w-4 h-4" />
-              <span>API Settings</span>
-            </button>
           </nav>
 
           <div className="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800/60 text-[11px] text-zinc-400 font-mono">
@@ -287,15 +273,6 @@ export const App: React.FC = () => {
               libraryItems={library}
               onClearLibrary={handleClearLibrary}
               onRemoveItem={handleRemoveLibraryItem}
-            />
-          )}
-
-          {activeTab === 'settings' && (
-            <SettingsTab
-              apiServerUrl={apiServerUrl}
-              setApiServerUrl={setApiServerUrl}
-              isApiOnline={isApiOnline}
-              onCheckHealth={checkHealth}
             />
           )}
         </main>
@@ -337,18 +314,6 @@ export const App: React.FC = () => {
         >
           <Folder className="w-4 h-4" />
           <span>Library</span>
-        </button>
-
-        <button
-          onClick={() => setActiveTab('settings')}
-          className={`flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl text-[10px] font-semibold transition-all ${
-            activeTab === 'settings'
-              ? 'text-blue-400 font-bold'
-              : 'text-zinc-400 hover:text-zinc-200'
-          }`}
-        >
-          <SettingsIcon className="w-4 h-4" />
-          <span>API Settings</span>
         </button>
       </nav>
     </div>
