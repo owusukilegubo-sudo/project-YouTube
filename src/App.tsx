@@ -168,9 +168,9 @@ export const App: React.FC = () => {
         setSubtitles={setSubtitles}
       />
 
-      <div className="flex-1 flex overflow-hidden">
-        {/* Navigation Sidebar */}
-        <aside className="w-56 bg-[#16161a] border-r border-zinc-800 flex flex-col justify-between p-3 select-none">
+      <div className="flex-1 flex flex-col md:flex-row overflow-hidden relative">
+        {/* Desktop Sidebar Navigation */}
+        <aside className="hidden md:flex w-56 bg-[#16161a] border-r border-zinc-800 flex-col justify-between p-3 select-none flex-shrink-0">
           <nav className="space-y-1">
             <button
               onClick={() => setActiveTab('downloader')}
@@ -267,6 +267,57 @@ export const App: React.FC = () => {
           )}
         </main>
       </div>
+
+      {/* Mobile Bottom Navigation Bar */}
+      <nav className="flex md:hidden bg-[#16161a] border-t border-zinc-800 p-2 items-center justify-around select-none flex-shrink-0 z-50">
+        <button
+          onClick={() => setActiveTab('downloader')}
+          className={`flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl text-[10px] font-semibold transition-all ${
+            activeTab === 'downloader'
+              ? 'text-blue-400 font-bold'
+              : 'text-zinc-400 hover:text-zinc-200'
+          }`}
+        >
+          <Download className="w-4 h-4" />
+          <span>Downloader</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('playlist')}
+          className={`flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl text-[10px] font-semibold transition-all ${
+            activeTab === 'playlist'
+              ? 'text-blue-400 font-bold'
+              : 'text-zinc-400 hover:text-zinc-200'
+          }`}
+        >
+          <ListMusic className="w-4 h-4" />
+          <span>Playlist</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('library')}
+          className={`flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl text-[10px] font-semibold transition-all ${
+            activeTab === 'library'
+              ? 'text-blue-400 font-bold'
+              : 'text-zinc-400 hover:text-zinc-200'
+          }`}
+        >
+          <Folder className="w-4 h-4" />
+          <span>Library</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('settings')}
+          className={`flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl text-[10px] font-semibold transition-all ${
+            activeTab === 'settings'
+              ? 'text-blue-400 font-bold'
+              : 'text-zinc-400 hover:text-zinc-200'
+          }`}
+        >
+          <SettingsIcon className="w-4 h-4" />
+          <span>API Settings</span>
+        </button>
+      </nav>
     </div>
   );
 };
